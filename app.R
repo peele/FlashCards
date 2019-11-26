@@ -33,10 +33,11 @@ SPANISH_SENTENCE <- 'Spanish Sentence'
 ENGLISH_WORD <- 'English Word'
 SPANISH_WORD <- 'Spanish Word'
 QUESTION_TYPES <- c(ENGLISH_SENTENCE, SPANISH_SENTENCE, ENGLISH_WORD, SPANISH_WORD)
+BLANK_PATTERN <- '_+'
 BLANK <- '______'
 
 fillInBlank <- function(sentence, word) {
-    parts <- str_split(sentence, '_+') %>% unlist
+    parts <- str_split(sentence, BLANK_PATTERN) %>% unlist
     tags$p(parts[[1]], tags$b(word), parts[[2]])    
 }
 
@@ -110,7 +111,7 @@ flog.info('Loading file: %s', inputFile)
 data <- read_excel(inputFile)
 data$Entry <- 1:nrow(data)
 missingBlanks <- data %>% 
-    filter(!str_detect(SpanishPhrase, '_+') | !str_detect(EnglishPhrase, '_+')) %>%
+    filter(!str_detect(SpanishPhrase, BLANK_PATTERN) | !str_detect(EnglishPhrase, BLANK_PATTERN)) %>%
     select(Entry)
 if(nrow(missingBlanks) > 0) {
     flog.warn('Entries [%s] are missing blanks and will be removed.', paste(missingBlanks$Entry, collapse = ', '))
