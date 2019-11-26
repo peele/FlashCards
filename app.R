@@ -113,7 +113,7 @@ data$Entry <- 1:nrow(data)
 flog.info('%s contains %d rows.', inputFile, nrow(data))
 
 # Define UI for application that draws a histogram
-ui <- fluidPage(
+ui <- fluidPage(theme = 'flashcards.css',
 
     # Application title
     titlePanel("Spanish Flashcards"),
@@ -131,14 +131,33 @@ ui <- fluidPage(
 
         # Show a plot of the generated distribution
         mainPanel(
-            actionButton('questionBtn', 'Question'),
-            htmlOutput('questionTxt'),
-            tags$hr(),
-            actionButton('hintBtn', 'Hint'),
-            htmlOutput('hintTxt'),
-            tags$hr(),
-            actionButton('answerBtn', 'Answer'),
-            htmlOutput('answerTxt')
+            actionLink(
+                'questionBtn',
+                tags$div(
+                    tags$h3('Question'),
+                    htmlOutput('questionTxt'),
+                    class = 'card'
+                ),
+                class = 'cardLink'
+            ),
+            actionLink(
+                'hintBtn',
+                tags$div(
+                    tags$h3('Hint'),
+                    htmlOutput('hintTxt'),
+                    class = 'card'
+                ),
+                class = 'cardLink'
+            ),
+            actionLink(
+                'answerBtn',
+                tags$div(
+                    tags$h3('Answer'),
+                    htmlOutput('answerTxt'),
+                    class = 'card'
+                ),
+                class = 'cardLink'
+            )
         )
     )
 )

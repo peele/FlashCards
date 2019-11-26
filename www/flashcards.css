@@ -1,0 +1,25 @@
+
+.card {
+  border: 2px solid gray;
+  border-radius: 5px;
+  min-height: 150px;
+  margin: 10px;
+  color: black;
+}
+
+.card h3 {
+  margin: 5px;
+  padding: 0;
+}
+
+.card p {
+  font-size: 18px;
+  text-align: center;
+  margin: 5px;
+  padding: 0;
+}
+
+.cardLink:link,hover,active,visted {
+  text-decoration: none;
+}
+
