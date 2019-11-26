@@ -166,25 +166,23 @@ ui <- fluidPage(theme = 'flashcards.css',
 server <- function(input, output) {
 
     currentEntry <- NULL
-    
-    observeEvent(input$questionType, {
-        flog.info('Question type: %s', input$questionType)
+    updateQuestion <- function() {
         currentEntry <<- data %>% sample_n(1)
         output$questionTxt <- renderUI({
             getQuestion(currentEntry, input$questionType)
         })
         output$hintTxt <- renderUI({''})
-        output$answerTxt <- renderUI({''})
+        output$answerTxt <- renderUI({''})   
+    }
+    
+    observeEvent(input$questionType, {
+        flog.info('Question type: %s', input$questionType)
+        updateQuestion()
     })
     
     observeEvent(input$questionBtn, {
         flog.info('Question button click.')
-        currentEntry <<- data %>% sample_n(1)
-        output$questionTxt <- renderUI({
-            getQuestion(currentEntry, input$questionType)
-        })
-        output$hintTxt <- renderUI({''})
-        output$answerTxt <- renderUI({''})
+        updateQuestion()
     })
     
     observeEvent(input$hintBtn, {
