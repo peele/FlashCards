@@ -109,6 +109,14 @@ flog.info('Loading file: %s', inputFile)
 
 data <- read_excel(inputFile)
 data$Entry <- 1:nrow(data)
+missingBlanks <- data %>% 
+    filter(!str_detect(SpanishPhrase, '_+') | !str_detect(EnglishPhrase, '_+')) %>%
+    select(Entry)
+if(nrow(missingBlanks) > 0) {
+    flog.warn('Entries [%s] are missing blanks and will be removed.', paste(missingBlanks$Entry, collapse = ', '))
+    data <- data %>%
+        filter(!Entry %in% missingBlanks$Entry)
+}
 
 flog.info('%s contains %d rows.', inputFile, nrow(data))
 
