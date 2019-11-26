@@ -28,9 +28,6 @@ library(tidyverse)
 library(readxl)
 library(futile.logger)
 
-inputFile <- 'data/Spanish.xlsx'
-flog.info('Loading file: %s', inputFile)
-
 ENGLISH_SENTENCE <- 'English Sentence'
 SPANISH_SENTENCE <- 'Spanish Sentence'
 ENGLISH_WORD <- 'English Word'
@@ -106,6 +103,9 @@ getAnswer <- function(entry, type) {
         flog.error("Unknown type: %s", type)
     }
 }
+
+inputFile <- 'data/Spanish.xlsx'
+flog.info('Loading file: %s', inputFile)
 
 data <- read_excel(inputFile)
 data$Entry <- 1:nrow(data)
