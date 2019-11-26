@@ -175,13 +175,15 @@ ui <- fluidPage(theme = 'flashcards.css',
 server <- function(input, output) {
 
     currentEntry <- NULL
+    hintGiven <- FALSE
     updateQuestion <- function() {
         currentEntry <<- data %>% sample_n(1)
         output$questionTxt <- renderUI({
             getQuestion(currentEntry, input$questionType)
         })
         output$hintTxt <- renderUI({''})
-        output$answerTxt <- renderUI({''})   
+        output$answerTxt <- renderUI({''})
+        hintGiven <<- FALSE
     }
     
     observeEvent(input$questionType, {
@@ -196,9 +198,14 @@ server <- function(input, output) {
     
     observeEvent(input$hintBtn, {
         flog.info('Hint button click.')
-        output$hintTxt <- renderUI({
-            getHint(currentEntry, input$questionType, data)
-        })
+        if(hintGiven) {
+            flog.info('Hint already given.')
+        } else {
+            output$hintTxt <- renderUI({
+                getHint(currentEntry, input$questionType, data)
+            })
+            hintGiven <<- TRUE
+        }
     })
     
     observeEvent(input$answerBtn, {
