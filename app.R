@@ -137,15 +137,6 @@ ui <- fluidPage(theme = 'flashcards.css',
     titlePanel("Spanish Flashcards"),
 
     sidebarLayout(
-        sidebarPanel(
-            selectInput(
-                'questionType',
-                'Question Type',
-                QUESTION_TYPES,
-                ENGLISH_SENTENCE
-            )
-        ),
-
         mainPanel(
             actionLink(
                 'questionBtn',
@@ -173,6 +164,15 @@ ui <- fluidPage(theme = 'flashcards.css',
                     class = 'card'
                 ),
                 class = 'cardLink'
+            )
+        ),
+        
+        sidebarPanel(
+            selectInput(
+                'questionType',
+                'Question Type',
+                QUESTION_TYPES,
+                ENGLISH_SENTENCE
             )
         )
     )
