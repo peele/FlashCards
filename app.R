@@ -28,13 +28,24 @@ library(tidyverse)
 library(readxl)
 library(futile.logger)
 
+RANDOM <- 'Random'
 ENGLISH_SENTENCE <- 'English Sentence'
 SPANISH_SENTENCE <- 'Spanish Sentence'
 ENGLISH_WORD <- 'English Word'
 SPANISH_WORD <- 'Spanish Word'
-QUESTION_TYPES <- c(ENGLISH_SENTENCE, SPANISH_SENTENCE, ENGLISH_WORD, SPANISH_WORD)
+QUESTION_TYPES <- c(RANDOM, ENGLISH_SENTENCE, SPANISH_SENTENCE, ENGLISH_WORD, SPANISH_WORD)
 BLANK_PATTERN <- '_+'
 BLANK <- '______'
+
+handleRandom <- function(type) {
+    if(type == RANDOM) {
+        t <- sample(tail(QUESTION_TYPES, -1), 1)
+        flog.info("Random question type selected: %s", t)
+        t
+    } else {
+        type
+    }
+}
 
 fillInBlank <- function(sentence, word) {
     parts <- str_split(sentence, BLANK_PATTERN) %>% unlist
@@ -175,11 +186,13 @@ ui <- fluidPage(theme = 'flashcards.css',
 server <- function(input, output) {
 
     currentEntry <- NULL
+    currentType <- NULL
     hintGiven <- FALSE
     updateQuestion <- function() {
         currentEntry <<- data %>% sample_n(1)
+        currentType <<- handleRandom(input$questionType)
         output$questionTxt <- renderUI({
-            getQuestion(currentEntry, input$questionType)
+            getQuestion(currentEntry, currentType)
         })
         output$hintTxt <- renderUI({''})
         output$answerTxt <- renderUI({''})
@@ -202,7 +215,7 @@ server <- function(input, output) {
             flog.info('Hint already given.')
         } else {
             output$hintTxt <- renderUI({
-                getHint(currentEntry, input$questionType, data)
+                getHint(currentEntry, currentType, data)
             })
             hintGiven <<- TRUE
         }
@@ -211,7 +224,7 @@ server <- function(input, output) {
     observeEvent(input$answerBtn, {
         flog.info('Answer button click.')
         output$answerTxt <- renderUI({
-            getAnswer(currentEntry, input$questionType)
+            getAnswer(currentEntry, currentType)
         })
     })
 }
