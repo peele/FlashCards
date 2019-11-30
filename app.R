@@ -132,13 +132,10 @@ if(nrow(missingBlanks) > 0) {
 
 flog.info('%s contains %d rows.', inputFile, nrow(data))
 
-# Define UI for application that draws a histogram
 ui <- fluidPage(theme = 'flashcards.css',
 
-    # Application title
     titlePanel("Spanish Flashcards"),
 
-    # Sidebar with a slider input for number of bins 
     sidebarLayout(
         sidebarPanel(
             selectInput(
@@ -149,7 +146,6 @@ ui <- fluidPage(theme = 'flashcards.css',
             )
         ),
 
-        # Show a plot of the generated distribution
         mainPanel(
             actionLink(
                 'questionBtn',
@@ -182,7 +178,6 @@ ui <- fluidPage(theme = 'flashcards.css',
     )
 )
 
-# Define server logic required to draw a histogram
 server <- function(input, output) {
 
     currentEntry <- NULL
