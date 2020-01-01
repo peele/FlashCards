@@ -76,7 +76,7 @@ getHint <- function(entry, type, all) {
             distinct() %>%
             sample_n(2) %>%
             bind_rows(select(entry, Spanish))
-        hints <- hints[sample(1:3), ] %>% unlist() %>% map(function(x) tags$p(x))
+        hints <- hints[sample(1:3), ] %>% unlist() %>% map(function(x) x %>% tolower() %>% tags$p())
         hints        
     } else if(type == ENGLISH_WORD) { # H: 3 English sentences with blank
         hints <- all %>%
